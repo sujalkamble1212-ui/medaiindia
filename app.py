@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import os
+import re
 from datetime import datetime
 
 from flask import (
@@ -161,6 +162,29 @@ def register():
         username=request.form["username"]
 
         password=request.form["password"]
+
+        # Server-side validation
+        if not re.match(r'^[a-zA-Z][a-zA-Z0-9_]{3,14}$', username):
+            flash(
+                "Username must be 4-15 characters long, start with a letter, and contain only letters, numbers, or underscores.",
+                "error"
+            )
+            return redirect(
+                url_for("register")
+            )
+
+        if (len(password) < 8 or
+            not re.search(r'[A-Z]', password) or
+            not re.search(r'[a-z]', password) or
+            not re.search(r'[0-9]', password) or
+            not re.search(r'[@$!%*?&]', password)):
+            flash(
+                "Password must be at least 8 characters long, and contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&).",
+                "error"
+            )
+            return redirect(
+                url_for("register")
+            )
 
         existing_user = User.get_by_username(username)
 

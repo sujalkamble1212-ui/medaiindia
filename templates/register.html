@@ -43,18 +43,50 @@
             {% endwith %}
             </div>
 
-            <form method="POST">
+            <form method="POST" id="registerForm">
                 <div class="input-group">
-                    <label>Username</label>
-                    <input type="text" name="username" required>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                    <div class="validation-container" id="username-validation" style="display: none;">
+                        <ul class="validation-list">
+                            <li id="user-rule-start" class="invalid"><span class="icon">❌</span> Must start with a letter</li>
+                            <li id="user-rule-length" class="invalid"><span class="icon">❌</span> Between 4 and 15 characters</li>
+                            <li id="user-rule-chars" class="invalid"><span class="icon">❌</span> Only letters, numbers, or underscores</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" name="password" required>
+                    <label for="password">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" name="password" required autocomplete="new-password">
+                        <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password visibility">
+                            <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                            <svg class="eye-closed" style="display: none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="validation-container" id="password-validation" style="display: none;">
+                        <div class="strength-bar-container">
+                            <div class="strength-bar" id="strengthBar"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText">Strength: Weak</div>
+                        <ul class="validation-list">
+                            <li id="pwd-rule-length" class="invalid"><span class="icon">❌</span> At least 8 characters</li>
+                            <li id="pwd-rule-uppercase" class="invalid"><span class="icon">❌</span> At least one uppercase letter (A-Z)</li>
+                            <li id="pwd-rule-lowercase" class="invalid"><span class="icon">❌</span> At least one lowercase letter (a-z)</li>
+                            <li id="pwd-rule-digit" class="invalid"><span class="icon">❌</span> At least one number (0-9)</li>
+                            <li id="pwd-rule-special" class="invalid"><span class="icon">❌</span> At least one special character (@$!%*?&)</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <button type="submit">Create Account</button>
+                <button type="submit" id="submitBtn">Create Account</button>
             </form>
 
             <p class="switch-text">
@@ -66,6 +98,156 @@
     </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const registerForm = document.getElementById('registerForm');
+    const togglePassword = document.getElementById('togglePassword');
+    
+    const usernameValidation = document.getElementById('username-validation');
+    const passwordValidation = document.getElementById('password-validation');
+    
+    // Username rules elements
+    const ruleUserStart = document.getElementById('user-rule-start');
+    const ruleUserLength = document.getElementById('user-rule-length');
+    const ruleUserChars = document.getElementById('user-rule-chars');
+    
+    // Password rules elements
+    const rulePwdLength = document.getElementById('pwd-rule-length');
+    const rulePwdUpper = document.getElementById('pwd-rule-uppercase');
+    const rulePwdLower = document.getElementById('pwd-rule-lowercase');
+    const rulePwdDigit = document.getElementById('pwd-rule-digit');
+    const rulePwdSpecial = document.getElementById('pwd-rule-special');
+    
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+    const regMsgContainer = document.querySelector('.regmsg');
+
+    function updateRule(element, isValid) {
+        const iconSpan = element.querySelector('.icon');
+        if (isValid) {
+            element.classList.remove('invalid');
+            element.classList.add('valid');
+            iconSpan.textContent = '✔';
+        } else {
+            element.classList.remove('valid');
+            element.classList.add('invalid');
+            iconSpan.textContent = '❌';
+        }
+    }
+
+    function checkUsername() {
+        const val = usernameInput.value;
+        if (val.length > 0) {
+            usernameValidation.style.display = 'block';
+        } else {
+            usernameValidation.style.display = 'none';
+            return false;
+        }
+
+        const startsWithLetter = /^[a-zA-Z]/.test(val);
+        const hasValidLength = val.length >= 4 && val.length <= 15;
+        const hasValidChars = /^[a-zA-Z0-9_]*$/.test(val);
+
+        updateRule(ruleUserStart, startsWithLetter);
+        updateRule(ruleUserLength, hasValidLength);
+        updateRule(ruleUserChars, hasValidChars);
+
+        return startsWithLetter && hasValidLength && hasValidChars;
+    }
+
+    function checkPassword() {
+        const val = passwordInput.value;
+        if (val.length > 0) {
+            passwordValidation.style.display = 'block';
+        } else {
+            passwordValidation.style.display = 'none';
+            return false;
+        }
+
+        const hasLength = val.length >= 8;
+        const hasUpper = /[A-Z]/.test(val);
+        const hasLower = /[a-z]/.test(val);
+        const hasDigit = /[0-9]/.test(val);
+        const hasSpecial = /[@$!%*?&]/.test(val);
+
+        updateRule(rulePwdLength, hasLength);
+        updateRule(rulePwdUpper, hasUpper);
+        updateRule(rulePwdLower, hasLower);
+        updateRule(rulePwdDigit, hasDigit);
+        updateRule(rulePwdSpecial, hasSpecial);
+
+        let score = 0;
+        if (hasLength) score++;
+        if (hasUpper) score++;
+        if (hasLower) score++;
+        if (hasDigit) score++;
+        if (hasSpecial) score++;
+
+        // Update strength bar & text
+        if (score <= 2) {
+            strengthBar.style.width = '33%';
+            strengthBar.style.backgroundColor = '#ef4444'; // Red
+            strengthText.textContent = 'Strength: Weak';
+            strengthText.className = 'strength-text weak';
+        } else if (score <= 4) {
+            strengthBar.style.width = '66%';
+            strengthBar.style.backgroundColor = '#f59e0b'; // Orange
+            strengthText.textContent = 'Strength: Medium';
+            strengthText.className = 'strength-text medium';
+        } else {
+            strengthBar.style.width = '100%';
+            strengthBar.style.backgroundColor = '#10b981'; // Green
+            strengthText.textContent = 'Strength: Strong';
+            strengthText.className = 'strength-text strong';
+        }
+
+        return score === 5;
+    }
+
+    usernameInput.addEventListener('input', checkUsername);
+    passwordInput.addEventListener('input', checkPassword);
+
+    // Toggle Password Visibility
+    togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        const eyeOpen = togglePassword.querySelector('.eye-open');
+        const eyeClosed = togglePassword.querySelector('.eye-closed');
+        
+        if (type === 'text') {
+            eyeOpen.style.display = 'none';
+            eyeClosed.style.display = 'block';
+        } else {
+            eyeOpen.style.display = 'block';
+            eyeClosed.style.display = 'none';
+        }
+    });
+
+    // Form Submission Validation
+    registerForm.addEventListener('submit', function(e) {
+        const isUserValid = checkUsername();
+        const isPwdValid = checkPassword();
+
+        if (!isUserValid || !isPwdValid) {
+            e.preventDefault();
+            
+            // Clean or create dynamic error container
+            regMsgContainer.innerHTML = '<div class="error">Please resolve the validation requirements before submitting.</div>';
+            
+            // Focus on first invalid input
+            if (!isUserValid) {
+                usernameInput.focus();
+            } else if (!isPwdValid) {
+                passwordInput.focus();
+            }
+        }
+    });
+});
+</script>
 
 </body>
 </html>

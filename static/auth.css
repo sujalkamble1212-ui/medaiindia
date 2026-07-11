@@ -197,3 +197,119 @@ button {
 .logo1 img {
     height: 40px;
 }
+
+/* Password visibility wrapper */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #64748b;
+    cursor: pointer;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.toggle-password:hover {
+    color: #1e293b;
+}
+
+.toggle-password svg {
+    pointer-events: none;
+}
+
+/* Validation container */
+.validation-container {
+    margin-top: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+/* Strength bar */
+.strength-bar-container {
+    background-color: #e2e8f0;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #ef4444;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-text {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.strength-text.weak { color: #ef4444; }
+.strength-text.medium { color: #f59e0b; }
+.strength-text.strong { color: #10b981; }
+
+/* Validation Checklist */
+.validation-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.validation-list li {
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #64748b;
+    transition: color 0.2s ease;
+}
+
+.validation-list li:last-child {
+    margin-bottom: 0;
+}
+
+.validation-list li .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.validation-list li.invalid {
+    color: #ef4444;
+}
+
+.validation-list li.valid {
+    color: #10b981;
+}
+
+/* Flash message styles */
+.regmsg {
+    margin-bottom: 15px;
+}

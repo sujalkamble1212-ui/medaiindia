@@ -112,76 +112,7 @@ disease_prediction_project/
 
 ---
 
-## ⚙️ Local Setup
 
-### Prerequisites
-- Python 3.10+
-- MongoDB Atlas account (or local MongoDB)
-- Git
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/sujalkamble1212-ui/medaiindia.git
-cd medaiindia
-```
-
-### 2. Create and activate virtual environment
-```bash
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-
-# macOS / Linux
-source venv/bin/activate
-```
-
-### 3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Set environment variables
-Create a `.env` file in the root directory:
-```env
-MONGO_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?appName=<appName>
-SECRET_KEY=your_secret_key_here
-```
-
-### 5. Run the application
-```bash
-python app.py
-```
-
-Open your browser at **http://127.0.0.1:5000**
-
----
-
-## 🐳 Docker
-
-```bash
-# Build the image
-docker build -t medai-india .
-
-# Run the container
-docker run -p 5000:5000 --env-file .env medai-india
-```
-
----
-
-## 🌐 Deployment (Render)
-
-This project is deployed on [Render](https://render.com). The `Procfile` handles the startup command:
-
-```
-web: gunicorn app:app
-```
-
-**Environment variables to set in Render dashboard:**
-- `MONGO_URI` — Your MongoDB Atlas connection string
-- `SECRET_KEY` — A secure random string
-
----
 
 ## 🩺 How It Works
 
@@ -199,25 +130,6 @@ web: gunicorn app:app
 
 ---
 
-## 📸 Screenshots
-
-> *Register and login pages with real-time validation feedback, symptom checker with 130+ options, and skin disease image classifier.*
-
----
-
-## 📄 License
-
-This project is for educational and demonstration purposes.
-
----
-
-## 👨‍💻 Author
-
-**Sujal Kamble**
-- GitHub: [@sujalkamble1212-ui](https://github.com/sujalkamble1212-ui)
-- Live App: [https://medais.onrender.com](https://medais.onrender.com)
-
----
 
 <div align="center">
   Made with ❤️ using Flask + TensorFlow + MongoDB

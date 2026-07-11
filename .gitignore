@@ -18,8 +18,6 @@ database.db
 static/uploads/
 
 # Model files (large binaries - store separately if needed)
-*.pkl
-*.keras
 
 # VS Code
 .vscode/

@@ -66,6 +66,17 @@ login_manager.login_message_category="error"
 
 model=joblib.load("disease_model.pkl")
 
+import os
+import tensorflow as tf
+import keras
+
+print("TensorFlow:", tf.__version__)
+print("Keras:", keras.__version__)
+print("Model exists:", os.path.exists("final_disease_model.keras"))
+
+if os.path.exists("final_disease_model.keras"):
+    print("Model size:", os.path.getsize("final_disease_model.keras"))
+
 def safe_load_model(path):
 
     try:

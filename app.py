@@ -66,35 +66,27 @@ login_manager.login_message_category="error"
 
 model=joblib.load("disease_model.pkl")
 
-import os
-import tensorflow as tf
-import keras
+def safe_load_model():
+    """
+    Tries to load the skin disease model.
+    Prefers the .h5 format (more cross-platform compatible),
+    falls back to .keras if .h5 is not present.
+    """
+    # Try .h5 first - avoids Normalization layer variable
+    # mismatch bugs seen with .keras on some platforms (e.g. Render)
+    for path in ["final_disease_model.h5", "final_disease_model.keras"]:
+        if os.path.exists(path):
+            try:
+                print(f"Loading skin model from: {path}")
+                loaded = tf.keras.models.load_model(path, compile=False)
+                print(f"Skin model loaded successfully from {path}")
+                return loaded
+            except Exception as e:
+                print(f"MODEL LOAD ERROR ({path}): {e}")
+    print("No skin model file found!")
+    return None
 
-print("TensorFlow:", tf.__version__)
-print("Keras:", keras.__version__)
-print("Model exists:", os.path.exists("final_disease_model.keras"))
-
-if os.path.exists("final_disease_model.keras"):
-    print("Model size:", os.path.getsize("final_disease_model.keras"))
-
-def safe_load_model(path):
-
-    try:
-
-        return tf.keras.models.load_model(
-            path,
-            compile=False
-        )
-
-    except Exception as e:
-
-        print("MODEL LOAD ERROR:",e)
-
-        return None
-
-skin_model=safe_load_model(
-    "final_disease_model.keras"
-)
+skin_model = safe_load_model()
 
 class_names=[
 

@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb+srv://devilark97_db_user:ZXXuNE1YKwY3DsCA@medai.nhikyij.mongodb.net/medai?appName=medai
+      - SECRET_KEY=supersecretkey
+      - PORT=5000

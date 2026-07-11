@@ -1,0 +1,24 @@
+# ── Web Framework ──────────────────────────────────────────
+Flask==3.1.3
+Flask-Login==0.6.3
+flask-cors==6.0.5
+Werkzeug==3.1.8
+
+# ── WSGI Server (production) ───────────────────────────────
+gunicorn==26.0.0
+
+# ── Database ───────────────────────────────────────────────
+pymongo==4.17.0
+dnspython==2.8.0      # required for SRV (mongodb+srv://) URIs
+
+# ── Data & ML ──────────────────────────────────────────────
+pandas==1.5.3
+numpy==1.26.4
+scikit-learn==1.2.2
+joblib==1.2.0
+
+# ── Image Processing ───────────────────────────────────────
+Pillow==12.2.0
+
+# ── Deep Learning ──────────────────────────────────────────
+tensorflow==2.15.0

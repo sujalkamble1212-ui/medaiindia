@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+    <div class="dashboard-header">
+        <h2>AI Skin Disease Prediction</h2>
+        <p>Upload a skin image and get instant AI disease analysis.</p>
+    </div>
+
+    <div class="card">
+
+        <h3>Upload Skin Image</h3>
+
+        <form action="/image-disease" method="POST" enctype="multipart/form-data">
+
+            <div class="upload-box">
+
+                <input type="file"
+                       name="image"
+                       id="imageInput"
+                       accept="image/*"
+                       required
+                       hidden
+                       onchange="previewImage(event)">
+
+                <label for="imageInput" class="custom-upload-btn">
+                    Choose Skin Image
+                </label>
+
+                <p id="file-name">No file selected</p>
+
+            </div>
+
+            <div class="preview-container">
+                <img id="preview" class="preview-image hidden">
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-primary">
+                    Predict Disease
+                </button>
+            </div>
+
+        </form>
+
+        <div id="loading" class="hidden loading">
+            🔄 AI analyzing image...
+        </div>
+
+       {% if prediction %}
+<div class="result-box">
+
+    <h3>Prediction: {{ prediction }}</h3>
+
+    {% if confidence %}
+    <p class="confidence-score">
+        Confidence Score: {{ confidence }}%
+    </p>
+    {% endif %}
+
+</div>
+{% endif %}
+
+    </div>
+
+</div>
+
+<script>
+function previewImage(event){
+
+    const preview=document.getElementById('preview');
+    const fileName=document.getElementById('file-name');
+
+    const file=event.target.files[0];
+
+    if(file){
+
+        fileName.textContent=file.name;
+
+        preview.src=URL.createObjectURL(file);
+
+        preview.classList.remove('hidden');
+    }
+}
+</script>
+
+{% include 'footer.html' %}
+
+{% endblock %}

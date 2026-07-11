@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MedAI - AI Disease Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+
+<nav class="navbar">
+
+  <a href="/">
+    <h2 class="logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="MedAI Logo">
+    </h2>
+  </a>
+ 
+
+   
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+    
+    <div class="nav-links" id="navLinks">
+        <a href="/">Home</a>
+        <a href="/analyze">Analyze</a>
+        <a href="/image-disease">Image Disease</a>
+        <a href="/history">History</a>
+
+        {% if current_user.is_authenticated %}
+            <span class="user">👤 {{ current_user.username }}</span>
+            <a href="/logout">Logout</a>
+        {% else %}
+            <a href="/login">Login</a>
+        {% endif %}
+    </div>
+
+</nav>
+
+
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+
+
+<script>
+function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("active");
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

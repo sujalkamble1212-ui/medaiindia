@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+
+# Environment secrets - NEVER commit this
+.env
+
+# SQLite legacy file
+database.db
+
+# Uploaded images
+static/uploads/
+
+# Model files (large binaries - store separately if needed)
+*.pkl
+*.keras
+
+# VS Code
+.vscode/
+
+# Docker
+*.log

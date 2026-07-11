@@ -77,40 +77,39 @@ print("Model exists:", os.path.exists("final_disease_model.keras"))
 if os.path.exists("final_disease_model.keras"):
     print("Model size:", os.path.getsize("final_disease_model.keras"))
 
-import tensorflow as tf
-import keras
-import os
-import traceback
-
 def safe_load_model(path):
-    print("=" * 60)
-    print("TensorFlow:", tf.__version__)
-    print("Keras:", keras.__version__)
-    print("Current Directory:", os.getcwd())
-    print("Model Path:", path)
-    print("Model Exists:", os.path.exists(path))
-
-    if os.path.exists(path):
-        print("Model Size:", os.path.getsize(path), "bytes")
-
-    print("=" * 60)
 
     try:
-        model = tf.keras.models.load_model(path, compile=False)
 
-        print("✅ MODEL LOADED SUCCESSFULLY")
-        print("Total Layers:", len(model.layers))
-
-        for layer in model.layers:
-            print(f"{layer.name} --> {type(layer).__name__}")
-
-        return model
+        return tf.keras.models.load_model(
+            path,
+            compile=False
+        )
 
     except Exception as e:
-        print("❌ MODEL LOAD FAILED")
-        print(str(e))
-        traceback.print_exc()
+
+        print("MODEL LOAD ERROR:",e)
+
         return None
+
+skin_model=safe_load_model(
+    "final_disease_model.keras"
+)
+
+class_names=[
+
+    "Acne",
+
+    "Candidiasis",
+
+    "Infestations_Bites",
+
+    "Psoriasis",
+
+    "SkinCancer",
+
+    "Warts"
+]
 
 class User(UserMixin):
     def __init__(self, user_id, username, password):
